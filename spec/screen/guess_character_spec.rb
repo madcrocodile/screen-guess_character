@@ -1,0 +1,52 @@
+# frozen_string_literal: true
+
+RSpec.describe Screen::GuessCharacter do
+  it "is a correct descendant" do
+    expect { Screen::Base.descendants_check!(1) }.not_to raise_error
+  end
+
+  describe "validations" do
+    it "returns true if the payload is valid" do
+      payload = {
+        characters: [
+          { value: "1", position: [0, 25] },
+          { value: "2", position: [25, 50] }
+        ],
+        color: "red"
+      }
+      screen = Screen::GuessCharacter.new(payload:)
+      expect(screen.valid?).to eq(true)
+      expect(screen.errors).to be_empty
+    end
+
+    it "returns false if the payload is invalid" do
+      payload = {}
+      screen = Screen::GuessCharacter.new(payload:)
+      expect(screen.valid?).to eq(false)
+      expect(screen.errors.full_messages).to eq([
+        "Did not contain a required property of 'characters'",
+        "Did not contain a required property of 'color'"
+      ])
+    end
+  end
+
+  describe "#preprocess_payload" do
+    it "processes the payload" do
+      expect(Screen::GuessCharacter.new(payload: { "characters" => [{ "value" => "1", "position" => ["0", "25"] }], "color" => "red" }).preprocess_payload).to eq({ "characters" => [{ "value" => "1", "position" => [0, 25] }], "color" => "red" })
+    end
+  end
+
+  describe "#answer_errors" do
+    it "returns errors if the answer is not provided" do
+      expect(Screen::GuessCharacter.new(answer: "").answer_errors).to eq(["can't be blank"])
+    end
+
+    it "returns errors if it's more than one character" do
+      expect(Screen::GuessCharacter.new(answer: "12").answer_errors).to eq(["can't be longer than 1 character"])
+    end
+
+    it "doesn't return errors if the answer exists" do
+      expect(Screen::GuessCharacter.new(answer: "1").answer_errors).to eq([])
+    end
+  end
+end

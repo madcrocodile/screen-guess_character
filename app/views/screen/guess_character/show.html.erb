@@ -1,0 +1,40 @@
+<div id="<%= screen.class.name %>" data-payload="<%= screen.payload.to_json %>"></div>
+
+<script type="text/babel">
+  const guessCharacter = document.getElementById("Screen::GuessCharacter")
+  const { payload } = guessCharacter.dataset
+  const { characters, color } = JSON.parse(payload)
+
+  const GuessCharacter = ({ onResponse, talkUrl, solutionPath }) => {
+    React.useEffect(() => {
+      const talk = new Audio(talkUrl)
+      talk.play()
+    }, [])
+
+    return ( // TODO: make relative, not absolute positions
+      <div className="relative" style={{ width: "400px", height: "400px" }}>
+        {characters.map((character, index) => (
+          <span
+            key={index}
+            className="text-3xl cursor-pointer"
+            style={{ color: color }}
+            onClick={() => {
+              onResponse()
+              window.location.href = `${solutionPath}?answer=${character.value}`
+            }}
+            style={{ position: "absolute", left: `${character.position[0]}%`, top: `${character.position[1]}%` }}
+          >
+            {character.value}
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <Runner component={GuessCharacter} />
+    </React.StrictMode>,
+    guessCharacter
+  )
+</script>
