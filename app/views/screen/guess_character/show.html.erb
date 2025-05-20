@@ -1,4 +1,11 @@
-<div id="<%= screen.class.name %>" data-payload="<%= screen.payload.to_json %>"></div>
+<div class="flex w-full justify-center" id="<%= screen.class.name %>" data-payload="<%= screen.payload.to_json %>"></div>
+
+<style>
+    @keyframes scaleIn {
+        0% { transform: scale(0.5); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>
 
 <script type="text/babel">
   const guessCharacter = document.getElementById("Screen::GuessCharacter")
@@ -14,21 +21,48 @@
       talk.addEventListener('ended', () => setIsTalking(false))
     }, [])
 
-    return ( // TODO: make relative, not absolute positions
-      <div className="relative" style={{ width: "400px", height: "400px" }}>
+    return (
+      <div className="relative w-full h-[70vh]">
         {characters.map((character, index) => (
-          <span
+          <div
             disabled={isTalking}
             key={index}
-            className={`text-3xl ${isTalking ? "cursor-not-allowed" : "cursor-pointer"}`}
-            onClick={isTalking ? undefined : () => {
-              onResponse()
-              window.location.href = `${solutionPath}?answer=${character.value}`
+            className={`animate-[scaleIn_0.5s_ease-in_${index / 3 - 0.3}s_forwards]`}
+            style={{
+              color: `${color}`,
+              opacity: 0,
+              position: "absolute",
+              left: `${character.position[0]}%`,
+              top: `${character.position[1]}%`
             }}
-            style={{ color: `${color}`, position: "absolute", left: `${character.position[0]}%`, top: `${character.position[1]}%` }}
           >
+            <span
+              className={
+                `text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl
+                span-character
+                px-2
+                lg:px-4
+                rounded-full
+                inline-block
+                transform
+                scale-100
+                transition-all
+                origin-center
+                duration-200
+                hover:scale-110
+                hover:shadow-[0_0_10px_4px_${color}]
+                ${isTalking
+                  ? "pointer-events-none"
+                  : "cursor-pointer"}`
+                }
+                onClick={isTalking ? undefined : () => {
+                    onResponse()
+                    window.location.href = `${solutionPath}?answer=${character.value}`
+                }}
+            >
             {character.value}
           </span>
+          </div>
         ))}
       </div>
     )
