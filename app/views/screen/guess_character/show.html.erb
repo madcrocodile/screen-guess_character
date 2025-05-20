@@ -6,23 +6,26 @@
   const { characters, color } = JSON.parse(payload)
 
   const GuessCharacter = ({ onResponse, talkUrl, solutionPath }) => {
+    const [isTalking, setIsTalking] = React.useState(false)
     React.useEffect(() => {
       const talk = new Audio(talkUrl)
       talk.play()
+      setIsTalking(true)
+      talk.addEventListener('ended', () => setIsTalking(false))
     }, [])
 
     return ( // TODO: make relative, not absolute positions
       <div className="relative" style={{ width: "400px", height: "400px" }}>
         {characters.map((character, index) => (
           <span
+            disabled={isTalking}
             key={index}
-            className="text-3xl cursor-pointer"
-            style={{ color: color }}
-            onClick={() => {
+            className={`text-3xl ${isTalking ? "cursor-not-allowed" : "cursor-pointer"}`}
+            onClick={isTalking ? undefined : () => {
               onResponse()
               window.location.href = `${solutionPath}?answer=${character.value}`
             }}
-            style={{ position: "absolute", left: `${character.position[0]}%`, top: `${character.position[1]}%` }}
+            style={{ color: `${color}`, position: "absolute", left: `${character.position[0]}%`, top: `${character.position[1]}%` }}
           >
             {character.value}
           </span>
