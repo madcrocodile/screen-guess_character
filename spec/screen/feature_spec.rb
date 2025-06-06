@@ -4,8 +4,8 @@ RSpec.describe Screen::GuessCharacter, type: :feature do
   let(:payload) {
     {
       characters: [
-        { value: "1", position: [0, 25] },
-        { value: "2", position: [25, 50] }
+        { value: "1", position: "5" },
+        { value: "2", position: "17"}
       ],
       color: "red"
     }
@@ -22,12 +22,12 @@ RSpec.describe Screen::GuessCharacter, type: :feature do
     div = page.find("div[id='Screen::GuessCharacter']")
 
     [1, 2].each do |digit|
-      expect(div).to have_css("span.span-character", text: digit.to_s)
+      expect(div).to have_css("button.button-character", text: digit.to_s)
     end
 
     using_wait_time(10) do
       page.accept_alert "Response received" do
-        page.find("span.span-character", text: "1").click
+        page.find("button.button-character", text: "1").click
       end
     end
 
