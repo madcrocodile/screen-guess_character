@@ -26,7 +26,7 @@ module Screen
                   "type" => "string"
                 },
                 "position" => {
-                  "type" => "string"
+                  "type" => "array"
                 }
               }
             }
@@ -41,7 +41,7 @@ module Screen
     def preprocess_payload
       payload["characters"].each do |character|
         character["value"] = character["value"].to_s
-        character["position"] = character["position"].to_s.to_i
+        character["position"] = character["position"].map(&:to_i)
       end
       payload
     end

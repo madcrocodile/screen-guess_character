@@ -32,37 +32,33 @@
     }, [])
 
     return (
-      <div className="w-full h-[80vh] p-2 bg-gradient-to-t from-[#8dbc4b] to-lime-200 flex justify-center content-center place-items-center rounded-3xl">
-        <div className="grid grid-cols-5 gap-2">
-          {[...Array(25)].map((item, index) => {
-            characters.forEach(({value, position}) => {
-              if (index == position) {
-                item = value;
-              }
-            })
+      <div className="w-full h-[80vh] bg-gradient-to-t from-[#8dbc4b] to-lime-200 rounded-3xl flex justify-center items-center">
+        <div className="relative w-[85vw] h-[85vw] md:w-[700px] md:h-[700px]">
+          {characters.map(({ value, position }, index) => {
+            const [left, top] = position
             return (
               <button
                 key={index}
                 className={`
+                  absolute
                   button-character
-                  w-[60px] sm:w-[80px] lg:w-[100px]
+                  w-[19%] md:w-[16%]
                   aspect-square
-                  text-4xl sm:text-5xl lg:text-6xl
+                  text-4xl sm:text-5xl md:text-6xl
                   text-[${color}] font-bold text-center
                   rounded-lg sm:rounded-xl lg:rounded-2xl
                   bg-[#ffbb29] hover:bg-[#ffc829]
                   border-4 border-[#eaad2b]
                   shadow-[0_4px_0_0_rgba(255,129,47,1),inset_0_12px_3px_-8px_rgba(255,255,255,0.5)]
                   hover:shadow-[2px_2px_0_0_rgba(255,129,47,1)]
-                  active:translate-y-1 active:shadow-none
+                  active:shadow-none
                   transition-all duration-100 ease-in-out
                   transform
                   opacity-0
                   select-none
-                  ${item
-                    ? "animate-[appearance_1.2s_ease-in-out_forwards]"
-                    : "pointer-events-none"
-                  }
+                  animate-[appearance_1.2s_ease-in-out_forwards]
+                  left-[${left * 20}%]
+                  top-[${top * 20}%]
                   ${isTalking
                     ? `pointer-events-none`
                     : `cursor-pointer`
@@ -71,11 +67,11 @@
                 onClick={() => {
                   setTimeout(() => {
                     onResponse()
-                    window.location.href = `${solutionPath}?answer=${item}`
-                  }, 2000)
+                    window.location.href = `${solutionPath}?answer=${value}`
+                  }, 500)
                 }}
               >
-                {item}
+                {value}
               </button>
             )
           })}
@@ -91,3 +87,4 @@
     guessCharacter
   )
 </script>
+<!--bundle exec ruby $(bundle info screen-base --path)/bin/screen_server.rb ./lib/screen/guess_character.rb "{\"characters\":[{\"value\":\"1\",\"position\":["1","2"]},{\"value\":\"2\",\"position\":["0","4"]}],\"color\":\"green\"}"-->
