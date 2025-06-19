@@ -1,4 +1,21 @@
-<div id="<%= screen.class.name %>" data-payload="<%= screen.payload.to_json %>"></div>
+<div class="flex w-full justify-center" id="<%= screen.class.name %>" data-payload="<%= screen.payload.to_json %>"></div>
+
+<style>
+  @keyframes appearance {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+        opacity: 80;
+        transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
 
 <script type="text/babel">
   const guessCharacter = document.getElementById("Screen::GuessCharacter")
@@ -6,27 +23,59 @@
   const { characters, color } = JSON.parse(payload)
 
   const GuessCharacter = ({ onResponse, talkUrl, solutionPath }) => {
+    const [isTalking, setIsTalking] = React.useState(true)
+
     React.useEffect(() => {
       const talk = new Audio(talkUrl)
       talk.play()
+      talk.addEventListener('ended', () => setIsTalking(false))
     }, [])
 
-    return ( // TODO: make relative, not absolute positions
-      <div className="relative" style={{ width: "400px", height: "400px" }}>
-        {characters.map((character, index) => (
-          <span
-            key={index}
-            className="text-3xl cursor-pointer"
-            style={{ color: color }}
-            onClick={() => {
-              onResponse()
-              window.location.href = `${solutionPath}?answer=${character.value}`
-            }}
-            style={{ position: "absolute", left: `${character.position[0]}%`, top: `${character.position[1]}%` }}
-          >
-            {character.value}
-          </span>
-        ))}
+    return (
+      <div className="w-full h-[80vh] bg-gradient-to-t from-[#8dbc4b] to-lime-200 rounded-3xl flex justify-center items-center">
+        <div className="relative w-[85vw] h-[85vw] md:w-[700px] md:h-[700px]">
+          {characters.map(({ value, position }, index) => {
+            const [left, top] = position
+            return (
+              <button
+                key={index}
+                className={`
+                  absolute
+                  button-character
+                  w-[19%] md:w-[16%]
+                  aspect-square
+                  text-4xl sm:text-5xl md:text-6xl
+                  text-[${color}] font-bold text-center
+                  rounded-lg sm:rounded-xl lg:rounded-2xl
+                  bg-[#ffbb29] hover:bg-[#ffc829]
+                  border-4 border-[#eaad2b]
+                  shadow-[0_4px_0_0_rgba(255,129,47,1),inset_0_12px_3px_-8px_rgba(255,255,255,0.5)]
+                  hover:shadow-[2px_2px_0_0_rgba(255,129,47,1)]
+                  active:shadow-none
+                  transition-all duration-100 ease-in-out
+                  transform
+                  opacity-0
+                  select-none
+                  animate-[appearance_1.2s_ease-in-out_forwards]
+                  left-[${left * 20}%]
+                  top-[${top * 20}%]
+                  ${isTalking
+                    ? `pointer-events-none`
+                    : `cursor-pointer`
+                  }
+                `}
+                onClick={() => {
+                  setTimeout(() => {
+                    onResponse()
+                    window.location.href = `${solutionPath}?answer=${value}`
+                  }, 500)
+                }}
+              >
+                {value}
+              </button>
+            )
+          })}
+        </div>
       </div>
     )
   }
@@ -38,3 +87,4 @@
     guessCharacter
   )
 </script>
+<!--bundle exec ruby $(bundle info screen-base --path)/bin/screen_server.rb ./lib/screen/guess_character.rb "{\"characters\":[{\"value\":\"1\",\"position\":["1","2"]},{\"value\":\"2\",\"position\":["0","4"]}],\"color\":\"green\"}"-->

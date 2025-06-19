@@ -9,10 +9,10 @@ RSpec.describe Screen::GuessCharacter do
     it "returns true if the payload is valid" do
       payload = {
         characters: [
-          { value: "1", position: [0, 25] },
-          { value: "2", position: [25, 50] }
+          { value: "1", position: [0, 1] },
+          { value: "2", position: [2, 3] }
         ],
-        color: "red"
+        color: "green"
       }
       screen = Screen::GuessCharacter.new(payload:)
       expect(screen.valid?).to eq(true)
@@ -32,7 +32,29 @@ RSpec.describe Screen::GuessCharacter do
 
   describe "#preprocess_payload" do
     it "processes the payload" do
-      expect(Screen::GuessCharacter.new(payload: { "characters" => [{ "value" => "1", "position" => ["0", "25"] }], "color" => "red" }).preprocess_payload).to eq({ "characters" => [{ "value" => "1", "position" => [0, 25] }], "color" => "red" })
+      expect(
+        Screen::GuessCharacter.new(
+          payload: {
+            "characters" => [
+              {
+                "value"    => "1",
+                "position" => ["0", "1"]
+              }
+            ],
+            "color" => "red"
+          }
+        ).preprocess_payload
+      ).to eq(
+         {
+           "characters" => [
+             {
+               "value"    => "1",
+               "position" => [0, 1]
+             }
+           ],
+           "color" => "red"
+         }
+     )
     end
   end
 
