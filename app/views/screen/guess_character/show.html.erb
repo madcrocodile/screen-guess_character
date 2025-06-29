@@ -1,4 +1,4 @@
-<div class="flex w-full justify-center" id="<%= screen.class.name %>" data-payload="<%= screen.payload.to_json %>"></div>
+<div class="flex w-full h-full justify-center" id="<%= screen.class.name %>" data-payload="<%= screen.payload.to_json %>"></div>
 
 <style>
   @keyframes appearance {
@@ -31,53 +31,55 @@
       talk.addEventListener('ended', () => setIsTalking(false))
     }, [])
 
-    return (
-      <div className="w-full h-[80vh] bg-gradient-to-t from-[#8dbc4b] to-lime-200 rounded-3xl flex justify-center items-center">
-        <div className="relative w-[85vw] h-[85vw] md:w-[700px] md:h-[700px]">
-          {characters.map(({ value, position }, index) => {
-            const [left, top] = position
-            return (
-              <button
-                key={index}
-                className={`
-                  absolute
-                  button-character
-                  w-[19%] md:w-[16%]
-                  aspect-square
-                  text-4xl sm:text-5xl md:text-6xl
-                  text-[${color}] font-bold text-center
-                  rounded-lg sm:rounded-xl lg:rounded-2xl
-                  bg-[#ffbb29] hover:bg-[#ffc829]
-                  border-4 border-[#eaad2b]
-                  shadow-[0_4px_0_0_rgba(255,129,47,1),inset_0_12px_3px_-8px_rgba(255,255,255,0.5)]
-                  hover:shadow-[2px_2px_0_0_rgba(255,129,47,1)]
-                  active:shadow-none
-                  transition-all duration-100 ease-in-out
-                  transform
-                  opacity-0
-                  select-none
-                  animate-[appearance_1.2s_ease-in-out_forwards]
-                  left-[${left * 20}%]
-                  top-[${top * 20}%]
-                  ${isTalking
-                    ? `pointer-events-none`
-                    : `cursor-pointer`
-                  }
-                `}
-                onClick={() => {
-                  setTimeout(() => {
-                    onResponse()
-                    window.location.href = `${solutionPath}?answer=${value}`
-                  }, 500)
-                }}
-              >
-                {value}
-              </button>
-            )
-          })}
+      return (
+        <div className="w-full h-full bg-gradient-to-t from-[#8dbc4b] to-lime-200 rounded-3xl flex justify-center items-center p-4">
+          <div className="grid grid-cols-5 gap-2 w-full place-items-center auto-rows-min">
+            {[...Array(25)].map((item, index) => {
+              characters.forEach(({value, position}) => {
+                const [column, row] = position
+                  const cell = row * 5 + column
+                if (index == cell) {
+                    item = value;
+                }
+              })
+              return (
+                !item
+                  ? <div className="invisible w-full aspect-square"></div>
+                  : <button
+                      key={index}
+                      className={`
+                        w-full
+                        button-character
+                        aspect-square
+                        text-4xl sm:text-6xl md:text-7xl
+                        font-bold text-center
+                        rounded-xl
+                        hover:shadow-[2px_2px_0_0_rgba(255,129,47,1)]
+                        active:shadow-none
+                        transition-all duration-100 ease-in-out
+                        transform
+                        opacity-0
+                        animate-[appearance_1.2s_ease-in-out_forwards]
+                        select-none
+                        ${isTalking
+                          ? `pointer-events-none text-[#6e7b80] border-2 border-[#c1c6c9] bg-[#d6dce0] shadow-[0_4px_0_-1px_rgba(193,198,201,1),inset_0_8px_3px_-8px_rgba(255,255,255,1)]`
+                          : `cursor-pointer text-[${color}] border-4 border-[#eaad2b] bg-[#ffbb29] hover:bg-[#ffc829] shadow-[0_4px_0_0_rgba(255,129,47,1),inset_0_12px_3px_-8px_rgba(255,255,255,0.5)]`
+                        }
+                      `}
+                      onClick={() => {
+                        setTimeout(() => {
+                          onResponse()
+                          window.location.href = `${solutionPath}?answer=${item}`
+                        }, 500)
+                      }}
+                    >
+                      {item}
+                    </button>
+                )
+            })}
+          </div>
         </div>
-      </div>
-    )
+      )
   }
 
   ReactDOM.render(
@@ -87,4 +89,3 @@
     guessCharacter
   )
 </script>
-<!--bundle exec ruby $(bundle info screen-base --path)/bin/screen_server.rb ./lib/screen/guess_character.rb "{\"characters\":[{\"value\":\"1\",\"position\":["1","2"]},{\"value\":\"2\",\"position\":["0","4"]}],\"color\":\"green\"}"-->

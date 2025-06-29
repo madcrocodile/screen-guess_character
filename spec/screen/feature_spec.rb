@@ -4,8 +4,8 @@ RSpec.describe Screen::GuessCharacter, type: :feature do
   let(:payload) {
     {
       characters: [
-        { value: "1", position: ["2", "3"] },
-        { value: "2", position: ["1", "1"] }
+        { value: "1", position: [2, 3] },
+        { value: "2", position: [1, 1] }
       ],
       color: "red"
     }
