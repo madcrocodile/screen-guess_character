@@ -46,6 +46,10 @@ module Screen
       payload
     end
 
+    def payload_errors
+      payload_schema_errors
+    end
+
     def answer_errors
       return ["can't be blank"] if answer.blank?
       return ["can't be longer than 1 character"] if answer.length > 1

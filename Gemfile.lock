@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:madcrocodile/screen-base.git
-  revision: d8299e326a0a255bda2ccd4886c9e330c491e8f9
+  revision: 6cf73aae1c412c573c433c7f60c6839789657bf2
   specs:
     screen-base (0.1.0)
       json-schema (>= 5)

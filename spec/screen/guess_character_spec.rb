@@ -5,8 +5,8 @@ RSpec.describe Screen::GuessCharacter do
     expect { Screen::Base.descendants_check!(1) }.not_to raise_error
   end
 
-  describe "validations" do
-    it "returns true if the payload is valid" do
+  describe "#payload_errors" do
+    it "returns empty array if the payload is valid" do
       payload = {
         characters: [
           { value: "1", position: [0, 1] },
@@ -15,15 +15,13 @@ RSpec.describe Screen::GuessCharacter do
         color: "green"
       }
       screen = Screen::GuessCharacter.new(payload:)
-      expect(screen.valid?).to eq(true)
-      expect(screen.errors).to be_empty
+      expect(screen.payload_errors).to eq([])
     end
 
-    it "returns false if the payload is invalid" do
+    it "returns array of errors if the payload is invalid" do
       payload = {}
       screen = Screen::GuessCharacter.new(payload:)
-      expect(screen.valid?).to eq(false)
-      expect(screen.errors.full_messages).to eq([
+      expect(screen.payload_errors).to eq([
         "Did not contain a required property of 'characters'",
         "Did not contain a required property of 'color'"
       ])
