@@ -1,19 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Screen::GuessCharacter do
-  it "is a correct descendant" do
-    expect { Screen::Base.descendants_check!(1) }.not_to raise_error
+  it "is a correct subclass" do
+    raise Screen::GuessCharacter.public_methods.inspect
+    expect { Screen::Base.subclasses_check!(1) }.not_to raise_error
   end
 
   describe "#payload_errors" do
     it "returns empty array if the payload is valid" do
-      payload = {
-        characters: [
-          { value: "1", position: [0, 1] },
-          { value: "2", position: [2, 3] }
-        ],
-        color: "green"
-      }
+      payload = Screen::GuessCharacter::EXAMPLE_PAYLOADS.first
       screen = Screen::GuessCharacter.new(payload:)
       expect(screen.payload_errors).to eq([])
     end

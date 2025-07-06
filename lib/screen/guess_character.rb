@@ -11,6 +11,16 @@ end
 
 module Screen
   class GuessCharacter < Screen::Base
+    EXAMPLE_PAYLOADS = [
+      {
+        characters: [
+          { value: "1", position: [0, 1] },
+          { value: "2", position: [2, 3] }
+        ],
+        color: "green"
+      }
+    ]
+
     def payload_schema
       {
         "type" => "object",

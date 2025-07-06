@@ -1,15 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Screen::GuessCharacter, type: :feature do
-  let(:payload) {
-    {
-      characters: [
-        { value: "1", position: [2, 3] },
-        { value: "2", position: [1, 1] }
-      ],
-      color: "red"
-    }
-  }
+  let(:payload) { Screen::GuessCharacter::EXAMPLE_PAYLOADS.first }
   let(:screen) { Screen::GuessCharacter.new(payload:) }
 
   before :each do
@@ -25,7 +17,7 @@ RSpec.describe Screen::GuessCharacter, type: :feature do
       expect(div).to have_css("button.button-character", text: digit.to_s)
     end
 
-    using_wait_time(11) do
+    using_wait_time(6) do
       page.accept_alert "Response received" do
         page.find("button.button-character", text: "1").click
       end

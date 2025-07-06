@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:madcrocodile/screen-base.git
-  revision: 6cf73aae1c412c573c433c7f60c6839789657bf2
+  revision: 0b549020c0c63f666b046914b31500fed6fcba88
   specs:
     screen-base (0.1.0)
       json-schema (>= 5)
@@ -221,7 +221,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.0)
-    rdoc (6.14.1)
+    rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
