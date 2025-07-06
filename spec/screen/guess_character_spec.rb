@@ -2,7 +2,6 @@
 
 RSpec.describe Screen::GuessCharacter do
   it "is a correct subclass" do
-    raise Screen::GuessCharacter.public_methods.inspect
     expect { Screen::Base.subclasses_check!(1) }.not_to raise_error
   end
 
