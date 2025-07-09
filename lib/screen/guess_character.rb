@@ -33,7 +33,9 @@ module Screen
               "required" => ["value", "position"],
               "properties" => {
                 "value" => {
-                  "type" => "string"
+                  "type" => "string",
+                  "minLength" => 1,
+                  "maxLength" => 1,
                 },
                 "position" => {
                   "type" => "array"

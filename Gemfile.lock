@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:madcrocodile/screen-base.git
-  revision: 0b549020c0c63f666b046914b31500fed6fcba88
+  revision: 1eeb6b3f87282102d1d34b1ba116298ce7784dd0
   specs:
     screen-base (0.1.0)
       json-schema (>= 5)
@@ -274,7 +274,7 @@ GEM
       tilt (~> 2.0)
     stringio (3.1.7)
     thor (1.3.2)
-    tilt (2.6.0)
+    tilt (2.6.1)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
