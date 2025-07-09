@@ -20,6 +20,21 @@ RSpec.describe Screen::GuessCharacter do
         "Did not contain a required property of 'color'"
       ])
     end
+
+    it "returns error if character value is not exactly one character" do
+      payload = {
+        "characters" => [
+          { "value" => "12", "position" => [0, 1] }, 
+          { "value" => "", "position" => [2, 3] }
+        ],
+        "color" => "green"
+      }
+      screen = Screen::GuessCharacter.new(payload:)
+      expect(screen.payload_errors).to match_array([
+        "The property '#/characters/0/value' was not of a maximum string length of 1",
+        "The property '#/characters/1/value' was not of a minimum string length of 1"
+      ])
+    end
   end
 
   describe "#preprocess_payload" do
